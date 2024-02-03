@@ -21,10 +21,21 @@ export default ExerciseListItem;
 
 const styles = StyleSheet.create({
     exerciseContainer: {
-        backgroundColor: "#f9c2ff",
+        backgroundColor: "#ffffff",
         padding: 10,
         borderRadius: 10,
         gap: 10,
+        marginHorizontal: 2,
+        // shadow from https://ethercreative.github.io/react-native-shadow-generator/
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.20,
+        shadowRadius: 1.41,
+
+        elevation: 2,
     },
     exerciseName: {
         fontSize: 20,
