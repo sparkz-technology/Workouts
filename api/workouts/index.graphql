@@ -1,0 +1,28 @@
+type DocumentsEntry {
+  _id: String
+  exercise: String
+  reps: Int
+  weight: Float
+}
+
+type workouts {
+  documents: [DocumentsEntry]
+}
+
+type Query {
+  sets: workouts
+    @rest(
+      method: POST
+      endpoint: "https://ap-south-1.aws.data.mongodb-api.com/app/data-fjeim/endpoint/data/v1/action/find"
+      headers: [
+        { name: "access-control-request-headers", value: "*" }
+        {
+          name: "api-key"
+          value: "z8M7rvxoQiltWrQ9gFoO9jhsQle1BRz3xj68z0MMU09RV8mpM2Z03sBQhd2F3E0Z"
+        }
+      ]
+      postbody: """
+      {"collection": "sets", "dataSource": "Cluster0", "database": "workouts"}
+      """
+    )
+}

@@ -1,2 +1,42 @@
 stepzen import curl https://api.api-ninjas.com/v1/exercises?muscle=chest \
  -H "X-API-KEY: WvezWzo+I1/Mgz/6bveDSw==t2NKqDHjYvHiOHWE"
+
+stepzen import curl  --request POST 'https://ap-south-1.aws.data.mongodb-api.com/app/data-fjeim/endpoint/data/v1/action/find' \
+--header 'Content-Type: application/json' \
+--header 'Access-Control-Request-Headers: *' \
+--header 'api-key: z8M7rvxoQiltWrQ9gFoO9jhsQle1BRz3xj68z0MMU09RV8mpM2Z03sBQhd2F3E0Z' \
+--data-raw '{
+    "collection":"sets",
+    "database":"workouts",
+    "dataSource":"Cluster0"
+}'
+
+
+ var axios = require('axios');
+var data = JSON.stringify({
+    "collection": "<COLLECTION_NAME>",
+    "database": "<DATABASE_NAME>",
+    "dataSource": "Cluster0",
+    "projection": {
+        "_id": 1
+    }
+});
+            
+var config = {
+    method: 'post',
+    url: 'https://ap-south-1.aws.data.mongodb-api.com/app/data-fjeim/endpoint/data/v1/action/findOne',
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Request-Headers': '*',
+      'api-key': 'z8M7rvxoQiltWrQ9gFoO9jhsQle1BRz3xj68z0MMU09RV8mpM2Z03sBQhd2F3E0Z',
+    },
+    data: data
+};
+            
+axios(config)
+    .then(function (response) {
+        console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+        console.log(error);
+    });

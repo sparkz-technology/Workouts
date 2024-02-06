@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import graphQLClient from "../graphqlClient.js";
 import { ActivityIndicator } from "react-native";
 import NewSetInput from "../components/NewSetInput.jsx";
+import SetsList from "../components/SetsList.jsx";
 
 
 const exercisesQuery = gql`
@@ -68,6 +69,7 @@ const ExerciseDetailScreen = () => {
         </Text>
       </View>
       <NewSetInput />
+      <SetsList />
     </ScrollView >
   );
 };
