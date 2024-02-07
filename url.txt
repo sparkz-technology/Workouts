@@ -11,6 +11,24 @@ stepzen import curl  --request POST 'https://ap-south-1.aws.data.mongodb-api.com
     "dataSource":"Cluster0"
 }'
 
+stepzen import curl  --request POST 'https://ap-south-1.aws.data.mongodb-api.com/app/data-fjeim/endpoint/data/v1/action/insertOne' \
+--header 'Content-Type: application/json' \
+--header 'Access-Control-Request-Headers: *' \
+--header 'Accpet: application/json' \
+--header 'api-key: z8M7rvxoQiltWrQ9gFoO9jhsQle1BRz3xj68z0MMU09RV8mpM2Z03sBQhd2F3E0Z' \
+--data-raw '{
+    "collection":"sets",
+    "database":"workouts",
+    "dataSource":"Cluster0",
+    "document": {
+        "exercise": "Bench Press",
+        "reps": 10,
+        "weight": 135
+    }
+}'
+
+
+
 
  var axios = require('axios');
 var data = JSON.stringify({

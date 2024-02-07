@@ -68,7 +68,7 @@ const ExerciseDetailScreen = () => {
           {isInstructionExpanded ? "See Less" : "See More"}
         </Text>
       </View>
-      <NewSetInput />
+      <NewSetInput exerciseName={exercise.name} />
       <SetsList />
     </ScrollView >
   );

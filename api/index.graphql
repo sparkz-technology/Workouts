@@ -1,3 +1,10 @@
-schema @sdl(files: ["exercises/index.graphql", "workouts/index.graphql"]) {
+schema
+  @sdl(
+    files: [
+      "exercises/index.graphql"
+      "workouts/index.graphql"
+      "newSet/index.graphql"
+    ]
+  ) {
   query: Query
 }
