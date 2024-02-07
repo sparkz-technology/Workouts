@@ -1,4 +1,4 @@
-import { ActivityIndicator, Text, FlatList } from "react-native";
+import { ActivityIndicator, Text, FlatList, StyleSheet } from "react-native";
 import { gql } from "graphql-request";
 import { useQuery } from "@tanstack/react-query";
 
@@ -17,7 +17,7 @@ const setsQuery = gql`
   }
 `;
 
-const SetsList = () => {
+const SetsList = ({ ListHeaderComponent }) => {
     const { data, error, isLoading } = useQuery({
         queryKey: ["sets"],
         queryFn: () => graphQLClient.request(setsQuery)
@@ -32,13 +32,10 @@ const SetsList = () => {
     return (
         <FlatList
             data={data.sets.documents}
+            ListHeaderComponent={ListHeaderComponent}
+            showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (
-                <Text
-                    style={{
-                        padding: 10, backgroundColor: "white", borderRadius: 5, marginVertical: 5,
-                        overflow: "hidden",
-                    }}
-                >
+                <Text style={styles.stack}>
                     {item.reps} x {item.weight}
                 </Text>
             )}
@@ -48,3 +45,13 @@ const SetsList = () => {
 };
 
 export default SetsList;
+
+const styles = StyleSheet.create({
+    stack: {
+        padding: 10,
+        backgroundColor: "white",
+        borderRadius: 5,
+        marginVertical: 5,
+        overflow: "hidden",
+    }
+});
