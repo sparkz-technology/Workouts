@@ -8,7 +8,10 @@ stepzen import curl  --request POST 'https://ap-south-1.aws.data.mongodb-api.com
 --data-raw '{
     "collection":"sets",
     "database":"workouts",
-    "dataSource":"Cluster0"
+    "dataSource":"Cluster0",
+    "filter": {
+        "exercise": "Bench Press"
+    }
 }'
 
 stepzen import curl  --request POST 'https://ap-south-1.aws.data.mongodb-api.com/app/data-fjeim/endpoint/data/v1/action/insertOne' \

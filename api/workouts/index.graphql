@@ -10,7 +10,7 @@ type workouts {
 }
 
 type Query {
-  sets: workouts
+  sets(exercise: String!): workouts
     @rest(
       method: POST
       endpoint: "https://ap-south-1.aws.data.mongodb-api.com/app/data-fjeim/endpoint/data/v1/action/find"
@@ -22,7 +22,13 @@ type Query {
         }
       ]
       postbody: """
-      {"collection": "sets", "dataSource": "Cluster0", "database": "workouts"}
+      {"collection": "sets",
+       "dataSource": "Cluster0",
+       "database": "workouts",
+       "filter": {
+         "exercise": "{{ .Get "exercise"}}"
+        }
+      }
       """
     )
 }
