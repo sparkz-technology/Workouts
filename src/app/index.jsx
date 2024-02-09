@@ -1,10 +1,13 @@
 import { StatusBar } from "expo-status-bar";
 import { ActivityIndicator, FlatList, StyleSheet, View, Text } from "react-native";
 import { useQuery } from "@tanstack/react-query";
-import { gql, request } from "graphql-request";
+import { gql } from "graphql-request";
+import { Redirect } from "expo-router";
 
 import ExerciseListItem from "../components/ExerciseListItem";
 import graphQLClient from "../graphqlClient.js";
+import { useAuth } from "../providers/AuthContext.jsx";
+
 
 const exercisesQuery = gql`
 query exercises($muscle: String, $name: String) {
@@ -18,6 +21,10 @@ query exercises($muscle: String, $name: String) {
 
 
 export default function ExercisesScreen() {
+
+  const { username } = useAuth();
+
+
   const { data, isLoading, error } = useQuery({
     queryKey: ["exercises"],
     queryFn: async () => {
@@ -31,6 +38,12 @@ export default function ExercisesScreen() {
   }
   if (error) {
     return <Text>Error: {error.message}</Text>;
+  }
+  if (!data) {
+    return <Text>No data</Text>;
+  }
+  if (!username) {
+    return <Redirect href={'/auth'} />;
   }
 
   return (
