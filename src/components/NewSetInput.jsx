@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Text, View, StyleSheet, TextInput, Button, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { gql } from 'graphql-request';
 
@@ -28,28 +28,28 @@ const NewSetInput = ({ exerciseName }) => {
     const { mutate, isPending, error } = useMutation({
         mutationFn: (newSet) => graphQLClient.request(mutationDocument, { newSet }),
         onError: (error) => console.error(error),
-        onSuccess: () => queryClient.invalidateQueries(`sets ${exerciseName}`),
+        onSuccess: () => {
+            queryClient.invalidateQueries(`sets ${exerciseName}`)
+            setReps("");
+            setWeight("");
+        },
     })
     const handleAddSet = () => {
         console.log("Add set", reps, weight);
-        if (!reps || !weight) {
-            return;
-        }
+        if (!reps || !weight) return
         mutate({
-            reps: parseInt(reps), weight: parseFloat(weight)
-            , exercise: exerciseName
+            reps: parseInt(reps), weight: parseFloat(weight), exercise: exerciseName
         });
 
-
-        setReps("");
-        setWeight("");
     };
     return (
         <View style={styles.container}>
             <View style={styles.row} >
                 <TextInput placeholder="Reps" style={styles.input} value={reps}
+                    aria-disabled={isPending}
                     onChangeText={setReps} keyboardType='numeric' />
                 <TextInput placeholder="Weight" style={styles.input} value={weight}
+                    aria-disabled={isPending}
                     onChangeText={setWeight} keyboardType='numeric' />
                 <TouchableOpacity
                     style={styles.button} onPress={handleAddSet} >
@@ -58,10 +58,7 @@ const NewSetInput = ({ exerciseName }) => {
                     </Text>
                 </TouchableOpacity>
             </View>
-            {error &&
-                <Text style={{ color: "red" }}>
-                    Failed to add set
-                </Text>}
+            {error && <Text style={{ color: "red" }}> Failed to add set </Text>}
         </View>
     )
 }
