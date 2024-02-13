@@ -3,10 +3,11 @@ import { gql } from "graphql-request";
 import { useQuery } from "@tanstack/react-query";
 
 import graphQLClient from "../graphqlClient.js";
+import { useAuth } from "../providers/AuthContext.jsx";
 
 const setsQuery = gql`
-  query MyQuery($exercise: String!) {
-    sets(exercise: $exercise){
+  query MyQuery($exercise: String!, $username: String!) {
+    sets(exercise: $exercise, username: $username) {
       documents {
         _id
         exercise
@@ -18,9 +19,10 @@ const setsQuery = gql`
 `;
 
 const SetsList = ({ ListHeaderComponent, exerciseName }) => {
+    const { username } = useAuth();
     const { data, error, isLoading } = useQuery({
         queryKey: [`sets ${exerciseName}`], // 👈 query key is an array with the query name and the exercise name
-        queryFn: () => graphQLClient.request(setsQuery, { exercise: exerciseName }),
+        queryFn: () => graphQLClient.request(setsQuery, { exercise: exerciseName, username }),
     });
 
     if (isLoading) {

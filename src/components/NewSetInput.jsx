@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { gql } from 'graphql-request';
 
 import graphQLClient from "../graphqlClient.js";
+import { useAuth } from '../providers/AuthContext';
 
 
 const mutationDocument = gql`
@@ -23,6 +24,8 @@ const NewSetInput = ({ exerciseName }) => {
     const [reps, setReps] = useState("");
     const [weight, setWeight] = useState("");
 
+    const { username } = useAuth();
+
     const queryClient = useQueryClient();
 
     const { mutate, isPending, error } = useMutation({
@@ -38,7 +41,7 @@ const NewSetInput = ({ exerciseName }) => {
         console.log("Add set", reps, weight);
         if (!reps || !weight) return
         mutate({
-            reps: parseInt(reps), weight: parseFloat(weight), exercise: exerciseName
+            reps: parseInt(reps), weight: parseFloat(weight), exercise: exerciseName, username
         });
 
     };
