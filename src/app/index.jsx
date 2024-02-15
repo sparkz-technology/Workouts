@@ -78,6 +78,8 @@ export default function ExercisesScreen() {
         keyExtractor={(item, index) => item.name + index}
         onEndReached={() => hasNextPage && fetchNextPage()}
         onEndReachedThreshold={0.5}
+        contentInsetAdjustmentBehavior="automatic"
+        style={{ padding: 10 }}
       />
       {isFetching && <ActivityIndicator />}
       <StatusBar style="auto" />
@@ -89,6 +91,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    padding: 10,
   },
 });
