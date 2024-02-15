@@ -1,8 +1,11 @@
 import { StatusBar } from "expo-status-bar";
 import { ActivityIndicator, FlatList, StyleSheet, View, Text } from "react-native";
 import { gql } from "graphql-request";
-import { Redirect } from "expo-router";
+import { Redirect, Stack } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { useDebounce } from "@uidotdev/usehooks";
+
 
 import ExerciseListItem from "../components/ExerciseListItem";
 import graphQLClient from "../graphqlClient.js";
@@ -23,29 +26,24 @@ query exercises($muscle: String, $name: String, $offset: Int) {
 export default function ExercisesScreen() {
 
   const { username } = useAuth();
-
-  // const { data, isLoading, error } = useQuery({
-  //   queryKey: ["exercises"],
-  //   queryFn: async () => {
-  //     const { exercises } = await graphQLClient.request(exercisesQuery, { offset: 0 });
-  //     return exercises;
-  //   },
-  // }
-  // );
+  const [search, setSearch] = useState('');
+  const searchValue = useDebounce(search?.trim(), 500);
 
   const { data, isLoading, error, fetchNextPage,
     hasNextPage,
     isFetching,
   } = useInfiniteQuery({
-    queryKey: ["exercises"],
+    queryKey: ["exercises", searchValue],
     queryFn: async ({ pageParam = 0 }) => {
-      const { exercises } = await graphQLClient.request(exercisesQuery, { offset: pageParam });
+      const { exercises } = await graphQLClient.request(exercisesQuery, { offset: pageParam, name: searchValue });
       return exercises;
     },
     getNextPageParam: (lastPage, allPages) => {
       return allPages.length * 10;
     },
   });
+
+
 
 
   if (isLoading) {
@@ -63,6 +61,16 @@ export default function ExercisesScreen() {
 
   return (
     <View style={styles.container}>
+      <Stack.Screen options={
+        {
+          headerSearchBarOptions: {
+            placeholder: 'Search',
+            onChangeText: (event) => setSearch(event.nativeEvent.text),
+            hideWhenScrolling: false,
+          }
+        }
+      } />
+
       <FlatList
         data={data.pages.flatMap(page => page)}
         contentContainerStyle={{ gap: 10 }}
