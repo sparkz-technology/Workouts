@@ -4,7 +4,6 @@ import NewSetInput from "./NewSetInput";
 
 const ExerciseDetail = ({ exercise }) => {
     const [isInstructionExpanded, setIsInstructionExpanded] = useState(false);
-
     return (
         <View style={styles.container}>
             <View style={styles.panel} >
